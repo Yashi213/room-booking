@@ -1,0 +1,646 @@
+basePath: /
+definitions:
+  github_com_Yashi213_room-booking_internal_api.Booking:
+    properties:
+      conferenceLink:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      slotId:
+        type: string
+      status:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.BookingStatus'
+      userId:
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.BookingStatus:
+    enum:
+    - active
+    - cancelled
+    type: string
+    x-enum-varnames:
+    - Active
+    - Cancelled
+  github_com_Yashi213_room-booking_internal_api.ErrorResponse:
+    properties:
+      error:
+        properties:
+          code:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponseErrorCode'
+          message:
+            type: string
+        type: object
+    type: object
+  github_com_Yashi213_room-booking_internal_api.ErrorResponseErrorCode:
+    enum:
+    - BOOKING_NOT_FOUND
+    - FORBIDDEN
+    - INTERNAL_ERROR
+    - INVALID_REQUEST
+    - NOT_FOUND
+    - ROOM_NOT_FOUND
+    - SCHEDULE_EXISTS
+    - SLOT_ALREADY_BOOKED
+    - SLOT_NOT_FOUND
+    - UNAUTHORIZED
+    type: string
+    x-enum-varnames:
+    - BOOKINGNOTFOUND
+    - FORBIDDEN
+    - INTERNALERROR
+    - INVALIDREQUEST
+    - NOTFOUND
+    - ROOMNOTFOUND
+    - SCHEDULEEXISTS
+    - SLOTALREADYBOOKED
+    - SLOTNOTFOUND
+    - UNAUTHORIZED
+  github_com_Yashi213_room-booking_internal_api.GetBookingsList200JSONResponse:
+    properties:
+      bookings:
+        items:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Booking'
+        type: array
+      pagination:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Pagination'
+    type: object
+  github_com_Yashi213_room-booking_internal_api.InternalErrorResponse:
+    properties:
+      error:
+        properties:
+          code:
+            type: string
+          message:
+            type: string
+        type: object
+    type: object
+  github_com_Yashi213_room-booking_internal_api.Pagination:
+    properties:
+      page:
+        description: Page Текущая страница (начиная с 1)
+        type: integer
+      pageSize:
+        description: PageSize Размер страницы
+        type: integer
+      total:
+        description: Total Общее количество записей
+        type: integer
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostBookingsCreateJSONBody:
+    properties:
+      createConferenceLink:
+        type: boolean
+      slotId:
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostDummyLoginJSONBody:
+    properties:
+      role:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostDummyLoginJSONBodyRole'
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostDummyLoginJSONBodyRole:
+    enum:
+    - admin
+    - user
+    type: string
+    x-enum-varnames:
+    - PostDummyLoginJSONBodyRoleAdmin
+    - PostDummyLoginJSONBodyRoleUser
+  github_com_Yashi213_room-booking_internal_api.PostLogin200JSONResponse:
+    properties:
+      token:
+        description: Token JWT для заголовка Authorization Bearer
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostLoginJSONBody:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostRegister201JSONResponse:
+    properties:
+      user:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.User'
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostRegisterJSONBody:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostRegisterJSONBodyRole'
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostRegisterJSONBodyRole:
+    enum:
+    - admin
+    - user
+    type: string
+    x-enum-varnames:
+    - PostRegisterJSONBodyRoleAdmin
+    - PostRegisterJSONBodyRoleUser
+  github_com_Yashi213_room-booking_internal_api.PostRoomsCreateJSONBody:
+    properties:
+      capacity:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.PostRoomsRoomIdScheduleCreateJSONRequestBody:
+    properties:
+      daysOfWeek:
+        description: DaysOfWeek 1=Пн .. 7=Вс, дни доступности. Каждое значение должно
+          быть в диапазоне 1–7.
+        items:
+          type: integer
+        type: array
+      endTime:
+        description: EndTime Время окончания (HH:MM) в рамках дня. Интерпретируется
+          как UTC.
+        type: string
+      id:
+        type: string
+      roomId:
+        type: string
+      startTime:
+        description: StartTime Время начала (HH:MM) в рамках дня. Интерпретируется
+          как UTC.
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.Room:
+    properties:
+      capacity:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.Schedule:
+    properties:
+      daysOfWeek:
+        description: DaysOfWeek 1=Пн .. 7=Вс, дни доступности. Каждое значение должно
+          быть в диапазоне 1–7.
+        items:
+          type: integer
+        type: array
+      endTime:
+        description: EndTime Время окончания (HH:MM) в рамках дня. Интерпретируется
+          как UTC.
+        type: string
+      id:
+        type: string
+      roomId:
+        type: string
+      startTime:
+        description: StartTime Время начала (HH:MM) в рамках дня. Интерпретируется
+          как UTC.
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.Slot:
+    properties:
+      end:
+        description: End Время окончания слота в UTC (ISO 8601, например 2024-06-10T09:30:00Z)
+        type: string
+      id:
+        type: string
+      roomId:
+        type: string
+      start:
+        description: Start Время начала слота в UTC (ISO 8601, например 2024-06-10T09:00:00Z)
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.Token:
+    properties:
+      token:
+        description: Token JWT для заголовка Authorization Bearer
+        type: string
+    type: object
+  github_com_Yashi213_room-booking_internal_api.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      role:
+        $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.UserRole'
+    type: object
+  github_com_Yashi213_room-booking_internal_api.UserRole:
+    enum:
+    - admin
+    - user
+    type: string
+    x-enum-varnames:
+    - UserRoleAdmin
+    - UserRoleUser
+host: localhost:8080
+info:
+  contact: {}
+  description: 'Сервис бронирования переговорок. Защищённые методы: заголовок Authorization:
+    Bearer {token} (токен из POST /dummyLogin).'
+  title: Room Booking Service
+  version: 1.0.0
+paths:
+  /_info:
+    get:
+      responses:
+        "200":
+          description: OK
+      summary: Служебный health
+      tags:
+      - System
+  /bookings/{bookingId}/cancel:
+    post:
+      parameters:
+      - description: UUID брони
+        format: uuid
+        in: path
+        name: bookingId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Booking'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Отменить бронь
+      tags:
+      - Bookings
+  /bookings/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: slotId, createConferenceLink
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostBookingsCreateJSONBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Booking'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать бронь
+      tags:
+      - Bookings
+  /bookings/list:
+    get:
+      parameters:
+      - default: 1
+        description: Номер страницы
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Размер страницы
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.GetBookingsList200JSONResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Список всех броней
+      tags:
+      - Bookings
+  /bookings/my:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Booking'
+              type: array
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Мои брони
+      tags:
+      - Bookings
+  /dummyLogin:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Роль admin или user
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostDummyLoginJSONBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Token'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      summary: Тестовый JWT по роли
+      tags:
+      - Auth
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Email и пароль
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostLoginJSONBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostLogin200JSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      summary: Вход
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Email, пароль, роль
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostRegisterJSONBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostRegister201JSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      summary: Регистрация
+      tags:
+      - Auth
+  /rooms/{roomId}/schedule/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: UUID переговорки
+        format: uuid
+        in: path
+        name: roomId
+        required: true
+        type: string
+      - description: Дни недели, время
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostRoomsRoomIdScheduleCreateJSONRequestBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Schedule'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать расписание
+      tags:
+      - Schedules
+  /rooms/{roomId}/slots/list:
+    get:
+      parameters:
+      - description: UUID переговорки
+        format: uuid
+        in: path
+        name: roomId
+        required: true
+        type: string
+      - description: Дата YYYY-MM-DD
+        example: "2024-06-10"
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Slot'
+              type: array
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Слоты по переговорке и дате
+      tags:
+      - Slots
+  /rooms/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Название, описание, вместимость
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.PostRoomsCreateJSONBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Room'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать переговорку
+      tags:
+      - Rooms
+  /rooms/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.Room'
+              type: array
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Yashi213_room-booking_internal_api.InternalErrorResponse'
+      summary: Список переговорок
+      tags:
+      - Rooms
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

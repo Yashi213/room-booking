@@ -1,3 +1,11 @@
+// @title Room Booking Service
+// @version 1.0.0
+// @description Сервис бронирования переговорок. Защищённые методы: заголовок Authorization: Bearer {token} (токен из POST /dummyLogin).
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
@@ -8,10 +16,12 @@ import (
 	"strconv"
 	"strings"
 
+	_ "github.com/Yashi213/room-booking/docs"
 	"github.com/Yashi213/room-booking/internal/app"
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
 
 func main() {
@@ -40,9 +50,10 @@ func main() {
 		ConferenceBadLink:   os.Getenv("MOCK_CONFERENCE_BAD_LINK"),
 		ConferenceTimeoutMS: confTimeoutMS,
 	})
+	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
 	const addr = ":8080"
-	log.Printf("server listening on %s", addr)
+	log.Printf("server listening on %s (swagger: /swagger/index.html)", addr)
 	if err := http.ListenAndServe(addr, r); err != nil {
 		log.Fatal(err)
 	}

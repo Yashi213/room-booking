@@ -9,6 +9,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// PostDummyLogin выдаёт тестовый JWT по роли (обязательный эндпоинт задания).
+// @Summary Тестовый JWT по роли
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param body body api.PostDummyLoginJSONBody true "Роль admin или user"
+// @Success 200 {object} api.Token
+// @Failure 400 {object} api.ErrorResponse
+// @Router /dummyLogin [post]
 func (h *Handler) PostDummyLogin(w http.ResponseWriter, r *http.Request) {
 	var req api.PostDummyLoginJSONBody
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -43,6 +52,16 @@ func (h *Handler) PostDummyLogin(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(api.Token{Token: signed})
 }
 
+// PostRegister регистрация по email и паролю (доп. задание).
+// @Summary Регистрация
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param body body api.PostRegisterJSONBody true "Email, пароль, роль"
+// @Success 201 {object} api.PostRegister201JSONResponse
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 409 {object} api.ErrorResponse
+// @Router /register [post]
 func (h *Handler) PostRegister(w http.ResponseWriter, r *http.Request) {
 	var body api.PostRegisterJSONBody
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
@@ -71,6 +90,16 @@ func (h *Handler) PostRegister(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// PostLogin вход по email и паролю (доп. задание).
+// @Summary Вход
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param body body api.PostLoginJSONBody true "Email и пароль"
+// @Success 200 {object} api.PostLogin200JSONResponse
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Router /login [post]
 func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
 	var body api.PostLoginJSONBody
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {

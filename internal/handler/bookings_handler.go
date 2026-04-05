@@ -9,6 +9,17 @@ import (
 	"github.com/Yashi213/room-booking/internal/mapper"
 )
 
+// GetBookingsList все брони с пагинацией (только admin).
+// @Summary Список всех броней
+// @Tags Bookings
+// @Produce json
+// @Param page query int false "Номер страницы" default(1)
+// @Param pageSize query int false "Размер страницы" default(20)
+// @Success 200 {object} api.GetBookingsList200JSONResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /bookings/list [get]
 func (h *Handler) GetBookingsList(w http.ResponseWriter, r *http.Request, params api.GetBookingsListParams) {
 	role, _, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {
@@ -35,6 +46,15 @@ func (h *Handler) GetBookingsList(w http.ResponseWriter, r *http.Request, params
 	})
 }
 
+// GetBookingsMy брони текущего пользователя на будущие слоты (только user).
+// @Summary Мои брони
+// @Tags Bookings
+// @Produce json
+// @Success 200 {object} map[string][]api.Booking
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /bookings/my [get]
 func (h *Handler) GetBookingsMy(w http.ResponseWriter, r *http.Request) {
 	role, userID, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {
@@ -60,6 +80,18 @@ func (h *Handler) GetBookingsMy(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// PostBookingsBookingIdCancel отмена своей брони (только user, идемпотентно).
+// @Summary Отменить бронь
+// @Tags Bookings
+// @Produce json
+// @Param bookingId path string true "UUID брони" format(uuid)
+// @Success 200 {object} map[string]api.Booking
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Failure 404 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /bookings/{bookingId}/cancel [post]
 func (h *Handler) PostBookingsBookingIdCancel(w http.ResponseWriter, r *http.Request, bookingId api.BookingIdPath) {
 	role, userID, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {
@@ -85,6 +117,20 @@ func (h *Handler) PostBookingsBookingIdCancel(w http.ResponseWriter, r *http.Req
 	})
 }
 
+// PostBookingsCreate бронь на слот (только user).
+// @Summary Создать бронь
+// @Tags Bookings
+// @Accept json
+// @Produce json
+// @Param body body api.PostBookingsCreateJSONBody true "slotId, createConferenceLink"
+// @Success 201 {object} map[string]api.Booking
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Failure 404 {object} api.ErrorResponse
+// @Failure 409 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /bookings/create [post]
 func (h *Handler) PostBookingsCreate(w http.ResponseWriter, r *http.Request) {
 	role, userID, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {

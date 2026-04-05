@@ -9,6 +9,21 @@ import (
 	"github.com/Yashi213/room-booking/internal/mapper"
 )
 
+// PostRoomsRoomIdScheduleCreate создаёт расписание для переговорки (только admin).
+// @Summary Создать расписание
+// @Tags Schedules
+// @Accept json
+// @Produce json
+// @Param roomId path string true "UUID переговорки" format(uuid)
+// @Param body body api.PostRoomsRoomIdScheduleCreateJSONRequestBody true "Дни недели, время"
+// @Success 201 {object} map[string]api.Schedule
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Failure 404 {object} api.ErrorResponse
+// @Failure 409 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /rooms/{roomId}/schedule/create [post]
 func (h *Handler) PostRoomsRoomIdScheduleCreate(w http.ResponseWriter, r *http.Request, roomId api.RoomIdPath) {
 	role, _, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {

@@ -9,6 +9,13 @@ import (
 	"github.com/Yashi213/room-booking/internal/mapper"
 )
 
+// GetRoomsList список переговорок.
+// @Summary Список переговорок
+// @Tags Rooms
+// @Produce json
+// @Success 200 {object} map[string][]api.Room
+// @Failure 500 {object} api.InternalErrorResponse
+// @Router /rooms/list [get]
 func (h *Handler) GetRoomsList(w http.ResponseWriter, r *http.Request) {
 	roomsDomain, err := h.roomsService.ListRooms(r.Context())
 	if err != nil {
@@ -24,6 +31,18 @@ func (h *Handler) GetRoomsList(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// PostRoomsCreate создаёт переговорку (только admin).
+// @Summary Создать переговорку
+// @Tags Rooms
+// @Accept json
+// @Produce json
+// @Param body body api.PostRoomsCreateJSONBody true "Название, описание, вместимость"
+// @Success 201 {object} map[string]api.Room
+// @Failure 400 {object} api.ErrorResponse
+// @Failure 401 {object} api.ErrorResponse
+// @Failure 403 {object} api.ErrorResponse
+// @Security BearerAuth
+// @Router /rooms/create [post]
 func (h *Handler) PostRoomsCreate(w http.ResponseWriter, r *http.Request) {
 	role, _, err := h.jwtAccess.ParseBearerAuthorization(r.Header.Get("Authorization"))
 	if err != nil {
